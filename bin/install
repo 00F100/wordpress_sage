@@ -1,0 +1,11 @@
+#!/bin/bash
+
+docker compose down
+rm -rf composer.lock app/vendor core
+bash bin/database/clean
+sudo sed -i '/127.0.0.1 example.wordpress.org/d' /etc/hosts
+echo "127.0.0.1 example.wordpress.org" | sudo tee -a /etc/hosts > /dev/null
+docker compose build wordpress
+bash bin/php/cli "composer install"
+# bash bin/php/cli "cd wp-content/themes/wordpress_sage && composer install"
+# bash bin/node/cli "cd wp-content/themes/wordpress_sage && yarn && yarn build"

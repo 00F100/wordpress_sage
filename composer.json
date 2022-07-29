@@ -1,0 +1,29 @@
+{
+    "type": "project",
+    "config": {
+        "vendor-dir": "app/vendor",
+        "allow-plugins": {
+            "johnpbloch/wordpress-core-installer": true,
+            "composer/installers": true
+        }
+    },
+    "extra": {
+        "wordpress-install-dir": "core",
+        "installer-paths": {
+            "app/plugins/{$name}/": ["type:wordpress-plugin"],
+            "app/themes/{$name}/": ["type:wordpress-theme"]
+        }
+    },
+    "require": {
+        "johnpbloch/wordpress": ">=5.1",
+        "wpackagist-plugin/wp-super-cache": "1.6.*",
+        "wpackagist-plugin/bbpress": "2.5.*",
+        "wpackagist-theme/twentynineteen": "*"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url" : "https://wpackagist.org"
+        }
+    ]
+}

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+COMMAND="sh"
+
+if [ ! -z "$1" ]; then
+    COMMAND="$@"
+fi
+
+docker compose run --rm --user=$UID --volume $PWD:/var/www/html php sh -c "$COMMAND"

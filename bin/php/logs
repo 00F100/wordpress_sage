@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker exec -it wordpress sh -c "tail -f /var/log/php/*.log"

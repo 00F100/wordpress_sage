@@ -1,0 +1,5 @@
+.docker/mysql/data/*
+!.docker/mysql/data/.empty
+app/vendor
+core
+composer.lock

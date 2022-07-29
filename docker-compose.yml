@@ -1,0 +1,69 @@
+services:
+  php:
+    image: 00f100/php-nginx-wordpress
+    container_name: php
+    build:
+      context: ${PWD}
+      dockerfile: ${PWD}/.docker/php/8.1.8/Dockerfile
+    depends_on:
+      - database
+  node:
+    image: node:localhost
+    container_name: node
+    build:
+      context: ${PWD}
+      dockerfile: ${PWD}/.docker/node/Dockerfile
+    volumes:
+      - ${PWD}:/var/www/html
+  wordpress:
+    image: wordpress/example
+    container_name: wordpress
+    build:
+      context: ${PWD}
+      dockerfile: ${PWD}/.docker/wordpress/Dockerfile
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - database
+      - php
+    volumes:
+      - ${PWD}:/var/www/html
+    environment:
+      - DB_NAME=wordpress_example
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_HOST=database
+      - WP_DEBUG=true
+      - WP_DEBUG_DISPLAY=true
+      - WP_HOME=https://example.wordpress.org
+      - WP_SITEURL=https://example.wordpress.org
+      - WP_ENVIRONMENT_TYPE=stage
+      - TABLE_PREFIX=wp_
+      - AUTH_KEY=qUVcRbq9QlMhajqIOxNQTngTE9uVQnyrzsEsVdNgcpFIYHcgkVigC5o5xfr57sFX
+      - SECURE_AUTH_KEY=edU2gH1LmjER1QOrh7U6Zwn069jjgsyE958JyvyujFORKhrP9wwPzGK5anQidkqy
+      - LOGGED_IN_KEY=hd9Kl3bh2eGSxv1aAw7CAeq9HH0vGhoPv23Z8aN1hCU1t6GVsCOS3DvIdgHPtboO
+      - NONCE_KEY=8MrWGTcFJpdOG8wjniOkZL9shtU7zZSNw4SjBRpHzFI7M6ZNMHcCnHuCmAZdjKuD
+      - AUTH_SALT=SvNCPMtBlLmMe90V9q18uKOZXwgXlWQ7Y11Z5ymWkU2MbsvHvfCOj014YW6WFU2v
+      - SECURE_AUTH_SALT=iyQXkEgtVb9Uzo3OlSLAgYJJzKhiYS0PjAM0goIfQELtgGWVD47FOzM0BvSKWyYZ
+      - LOGGED_IN_SALT=zYkX30kMDFF0MEKSJBEN4DhOLDSkOOHGRqYQkRK0xymwtf1MWEMf0qHCkxr9Bvt6
+      - NONCE_SALT=vhdJGsbKUCbKs8pMCHPcXudu76bySzNT3wNCkFU5ubQ9tEgB3hCeyeadjYSUZRhc
+  database:
+    image: mysql
+    container_name: database
+    command: --sql-mode=""
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ALLOW_EMPTY_PASSWORD=false
+      - MYSQL_DATABASE=wordpress_example
+    volumes:
+      - ${PWD}/.docker/mysql/data:/var/lib/mysql
+  database-cli:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      - 8080:80
+    environment:
+      - PMA_HOST=database
