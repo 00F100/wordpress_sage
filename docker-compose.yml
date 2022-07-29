@@ -29,6 +29,7 @@ services:
       - php
     volumes:
       - ${PWD}:/var/www/html
+      - ${PWD}/.docker/php/8.1.8/fpm/www.conf:/opt/php/etc/php-fpm.d/www.conf
     environment:
       - DB_NAME=wordpress_example
       - DB_USER=root

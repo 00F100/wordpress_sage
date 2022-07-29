@@ -2,3 +2,10 @@
 
 docker compose down
 docker compose up -d
+bash bin/php/cli "composer dump-autoload"
+echo ""
+echo "Success start services!"
+echo ""
+echo "  Frontend: https://example.wordpress.org/"
+echo "  Admin: https://example.wordpress.org/core/wp-admin"
+echo ""
